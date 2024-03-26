@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthenticationRequest;
+use App\Http\Requests\CreateProfilRequest;
 use App\Models\Admin;
+use App\Models\Profil;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -24,10 +27,15 @@ class AdminController extends Controller
         return response()->json(['token' => $token], 200);
     }
 
-    public function createProfile(){
+    public function createProfile(CreateProfilRequest $request){
+        $data = $request->validated();
+        $data['status'] = "En attente";
+        /** @var UploadedFile $image */
+        $image = $request->validated('image');
+        $data['image'] = $image->store('profil', 'public');
+        $profil = Profil::create($data);
 
-        return response()->json(['message' => 'you are authenticated with your token']);
-
+        return response()->json(['message' => "The profil ".$profil->getFullName()." was created successfully, the status was automatically set as \"En attente\" so as to validate the submitted datas"]);
     }
 
 }
