@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 
-class CreateProfilRequest extends FormRequest
+class ProfilRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,22 +30,22 @@ class CreateProfilRequest extends FormRequest
                 "min:2", 
                 "max:255", 
                 "regex:/^[a-zA-Z\-]+$/",
-                Rule::unique(Profil::class)
+                // We want to make sure there is a unique lastname expect for the same profile
+                Rule::unique(Profil::class)->ignore($this->route()->parameter('profil'))
             ],
             'prenom' => [
                 "required", 
                 "min:2",
                 "max:255",
-                "regex:/^[a-zA-Z\-]+$/",
-                Rule::unique(Profil::class)
+                "regex:/^[a-zA-Z\-]+$/"
             ],
             'image' => [
                 File::types(['png', 'jpg', 'jpeg'])->max('2mb')
             ],
-            // 'status' => [
-            //     "required",
-            //     Rule::enum(Profil::class)->only([Profil::PROFILE_STATE_ACTIVE, Profil::PROFILE_STATE_AWAITING, Profil::PROFILE_STATE_INACTIVE])
-            // ]
+            // The 3 valid status => "Actif", "En Attente", "Inactif"
+            'status' => [
+                'in:'.Profil::PROFILE_STATE_ACTIVE.','.Profil::PROFILE_STATE_AWAITING.','.Profil::PROFILE_STATE_INACTIVE
+            ]
         ];
     }
 }

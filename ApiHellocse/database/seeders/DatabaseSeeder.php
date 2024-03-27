@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,16 +14,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
+        // Admin used to create Authentification Tokens
         \App\Models\Admin::factory()->create([
             'email' => 'admin@gmail.com',
             'password' => Hash::make("adminSecurePassword")
+        ]);
+
+        // Multiple profiles created 3 Awating, 3 actives and 1 inactive
+
+        \App\Models\Profil::factory(3)->create([
+            'status' => 'En attente'
+        ]);
+
+        \App\Models\Profil::factory(3)->create([
+            'status' => 'Actif'
+        ]);
+
+        \App\Models\Profil::factory()->create([
+            'status' => 'Inactif'
         ]);
     }
 }

@@ -24,8 +24,8 @@ Route::prefix("/admin")->name('admin.')->controller(AdminController::class)->gro
     Route::post("/authenticate", 'authenticate')->name('authenticate');
     // You MUST have generated a token to pass the sanctum authentication
     Route::middleware('auth:sanctum')->post('/profile/create', 'createProfile')->name('createProfile');
-    // Route::middleware('auth:sanctum')->patch("/profile/{profile}/manage", 'editProfile')->name('editProfile');
-    // Route::middleware('auth:sanctum')->delete("/profile/{profile}/manage", 'deleteProfile')->name('deleteProfile');
+    Route::middleware('auth:sanctum')->patch("/profile/{profil}/manage", 'editProfile')->name('editProfile');
+    Route::middleware('auth:sanctum')->delete("/profile/{profil}/manage", 'deleteProfile')->name('deleteProfile');
 });
 
 Route::get("/profiles/show", [ProfilController::class, 'getActiveProfiles'])->name('profile.show');

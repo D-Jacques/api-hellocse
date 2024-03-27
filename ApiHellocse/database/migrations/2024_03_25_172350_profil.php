@@ -14,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('profils', function(Blueprint $table){
             $table->id();
-            $table->string('nom');
-            $table->string('prenom');
+            $table->string('nom', 255);
+            $table->string('prenom', 255);
             $table->string('image')->nullable();
-            $table->string('status')->default(Profil::PROFILE_STATE_AWAITING);
+            $table->string('status',50)->default(Profil::PROFILE_STATE_AWAITING);
             $table->timestamps();
         });
     }
