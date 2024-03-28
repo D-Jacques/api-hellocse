@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthenticationRequest;
 use App\Http\Requests\ProfilRequest;
 use App\Http\Services\AdminService;
-use App\Models\Admin;
 use App\Models\Profil;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AdminController extends Controller
 {
@@ -33,13 +34,13 @@ class AdminController extends Controller
         $credentials = $request->validated();
 
         if(!Auth::attempt($credentials)){
-            return response()->json(['error' => "Authentication failed, check your credentials"], 404);
+            return response()->json(['error' => "Authentication failed, check your credentials"], Response::HTTP_NOT_FOUND);
         }
         
         $admin = Auth::user();
         $token = $admin->createToken('adminAuthenticationToken', ['*'], now()->addDay())->plainTextToken;
 
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token]);
     }
 
     /**
@@ -54,7 +55,7 @@ class AdminController extends Controller
         $data['status'] = "En attente";
         $profil = Profil::create($data);
 
-        return response()->json(['message' => "The profil of ".$profil->getFullName()." was created successfully"]);
+        return response()->json(['message' => "The profil of ".$profil->getFullName()." was created successfully"], Response::HTTP_CREATED);
     }
 
     /**
