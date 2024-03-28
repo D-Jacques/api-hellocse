@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfilController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix("/admin")->name('admin.')->controller(AdminController::class)->group(function(){
+    Route::post("/authenticate", 'authenticate')->name('authenticate');
+    // You MUST have generated a token to pass the sanctum authentication
+    Route::middleware('auth:sanctum')->post('/profile/create', 'createProfile')->name('createProfile');
+    Route::middleware('auth:sanctum')->patch("/profile/{profil}/manage", 'editProfile')->name('editProfile');
+    Route::middleware('auth:sanctum')->delete("/profile/{profil}/manage", 'deleteProfile')->name('deleteProfile');
+});
+
+Route::get("/profiles/show", [ProfilController::class, 'getActiveProfiles'])->name('profile.show');
