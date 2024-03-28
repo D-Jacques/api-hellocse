@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class AdminServiceTest extends TestCase
 {
     /**
-     * A basic unit test example.
+     * Unit test for handleRequestData method.
      */
     public function testHandleRequestData(): void
     {

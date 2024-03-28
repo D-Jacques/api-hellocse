@@ -15,6 +15,7 @@ class AdminControllerTest extends TestCase
 {
     /**
      * Test for the admin authentication function.
+     * @covers App\Http\Controllers\AdminController::authenticate
      * @dataProvider provideTestAuthenticate
      */
     public function testAuthenticate(string $password, int $httpResponseCode, string $expectedTokenKey): void
@@ -57,6 +58,8 @@ class AdminControllerTest extends TestCase
     }
 
     /**
+     * Test for the createProfile method
+     * @covers App\Http\Controllers\AdminController::createProfile
      * @dataProvider provideTestCreatedProfile
      */
     public function testCreateProfile(array $dummyDatas, int $httpResponseCode, string $expectedJsonFragment){
@@ -91,4 +94,10 @@ class AdminControllerTest extends TestCase
             ]
         ];
     }
+
+    /**
+     * Wanted to create some test for edit and delete methods
+     * Though due to lack of time i had not enough time to do them
+     */
+
 }
